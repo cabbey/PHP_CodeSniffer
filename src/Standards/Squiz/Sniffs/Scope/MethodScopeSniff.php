@@ -67,7 +67,10 @@ class MethodScopeSniff extends AbstractScopeSniff
         if ($modifier === null) {
             $error = 'Visibility must be declared on method "%s"';
             $data  = [$methodName];
-            $phpcsFile->addError($error, $stackPtr, 'Missing', $data);
+            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'Missing', $data);
+            if ($fix === true) {
+                $phpcsFile->fixer->addContentBefore($stackPtr, 'public ');
+            }
         }
 
     }//end processTokenWithinScope()

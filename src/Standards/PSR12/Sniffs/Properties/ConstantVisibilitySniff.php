@@ -52,8 +52,11 @@ class ConstantVisibilitySniff implements Sniff
             return;
         }
 
-        $error = 'Visibility must be declared on all constants if your project supports PHP 7.1 or later';
-        $phpcsFile->addWarning($error, $stackPtr, 'NotFound');
+        $warning = 'Visibility must be declared on all constants if your project supports PHP 7.1 or later';
+        $fix     = $phpcsFile->addFixableWarning($warning, $stackPtr, 'NotFound');
+        if ($fix === true) {
+            $phpcsFile->fixer->addContentBefore($stackPtr, 'public ');
+        }
 
     }//end process()
 
